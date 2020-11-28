@@ -1,12 +1,24 @@
-import pickle
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import json
 from deploycode import fun
 
-app = Flask(__name__)
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
+
+app = Flask(_name_)
 @app.route("/")
 def index():
 	return render_template('index.html')
+
+
+@app.route('/shutdown', methods=['GET'])
+def shutdown():
+    shutdown_server()
+    return """Server shutting down...\n Thank you for visiting!"""
 
 @app.route("/result", methods = ['GET'])
 def calc_xor_Predict():
@@ -23,5 +35,5 @@ def calc_xor_Predict():
 	#return json.dumps(res)
 
 
-if __name__ == "__main__":
-	app.run(debug = True, port = 8791)
+if _name_ == "_main_":
+	app.run(debug = True, port = 9999)
